@@ -1,0 +1,1141 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f3460;
+            --text-primary: #e8e8e8;
+            --text-secondary: #a0a0a0;
+            --accent: #00d9ff;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #e17055;
+            --critical: #d63031;
+            --color-cold: #3498db;
+            --color-cool: #00d9ff;
+            --color-good: #2ecc71;
+            --color-bad: #f39c12;
+            --color-danger-alt: #e74c3c;
+            --color-neutral: #7f8c8d;
+            --color-district-bg: #243552;
+            --color-replay: #9b59b6;
+            --bg-panel: rgba(22, 33, 62, 0.95);
+            --shadow-panel: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            height: 60px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .navbar-brand h1 {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .navbar-status {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .http-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 184, 148, 0.15);
+            border: 1px solid var(--success);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .http-status.ok {
+            background: rgba(0, 184, 148, 0.15);
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .http-status.slow {
+            background: rgba(253, 203, 110, 0.15);
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+
+        .http-status.error {
+            background: rgba(225, 112, 85, 0.15);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .http-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .http-status.ok .http-status-dot {
+            background: var(--success);
+        }
+
+        .http-status.slow .http-status-dot {
+            background: var(--warning);
+        }
+
+        .http-status.error .http-status-dot {
+            background: var(--danger);
+            animation: none;
+        }
+
+        .data-refresh-time {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+
+        /* 리플레이 시간 표시기 (상단 navbar) - 보라색 계열 */
+        .replay-time-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            background: linear-gradient(135deg, rgba(155, 89, 182, 0.4), rgba(142, 68, 173, 0.3));
+            border: 2px solid var(--color-replay);
+            border-radius: 20px;
+            font-size: 0.95rem;
+            color: #ffffff;
+            font-weight: bold;
+            animation: replayPulse 1.2s ease-in-out infinite;
+            box-shadow: 0 0 15px rgba(155, 89, 182, 0.6);
+        }
+
+        @keyframes replayPulse {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
+                border-color: var(--color-replay);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(155, 89, 182, 0.9), 0 0 40px rgba(155, 89, 182, 0.5);
+                border-color: #bb6bd9;
+                transform: scale(1.05);
+            }
+        }
+
+        .replay-indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--color-replay);
+            animation: replayDotPulse 0.6s ease-in-out infinite;
+            box-shadow: 0 0 8px rgba(155, 89, 182, 0.8);
+        }
+
+        @keyframes replayDotPulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+                box-shadow: 0 0 8px rgba(155, 89, 182, 0.8);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(0.7);
+                box-shadow: 0 0 15px rgba(155, 89, 182, 1);
+            }
+        }
+
+        #replayTimeDisplay {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 1.1rem;
+            color: #ffffff;
+            margin-left: 0.5rem;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+            transition: transform 0.2s ease, color 0.2s ease;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* 지역 진입 연출 오버레이 */
+        .location-announce {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            background: radial-gradient(
+                ellipse 80% 60% at 50% 50%,
+                rgba(0, 0, 0, 0.7) 0%,
+                rgba(0, 0, 0, 0.5) 40%,
+                rgba(0, 0, 0, 0.3) 70%,
+                transparent 100%
+            );
+        }
+
+        .location-announce.visible {
+            opacity: 1;
+        }
+
+        .location-announce .district-name {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow:
+                0 0 20px rgba(0, 217, 255, 0.8),
+                0 0 40px rgba(0, 217, 255, 0.5),
+                0 0 60px rgba(0, 217, 255, 0.3),
+                2px 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 0.3em;
+            transform: scale(0.8);
+            animation: locationZoomIn 0.6s ease-out forwards;
+        }
+
+        .location-announce .dong-name {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow:
+                0 0 10px rgba(0, 217, 255, 0.5),
+                1px 1px 2px rgba(0, 0, 0, 0.8);
+            letter-spacing: 0.2em;
+            margin-top: 0.5rem;
+            opacity: 0;
+            animation: locationFadeIn 0.5s ease-out 0.3s forwards;
+        }
+
+        .location-announce .subtitle {
+            font-size: 1rem;
+            color: rgba(155, 89, 182, 0.9);
+            text-shadow: 0 0 10px rgba(155, 89, 182, 0.5);
+            margin-top: 1.5rem;
+            letter-spacing: 0.15em;
+            opacity: 0;
+            animation: locationFadeIn 0.5s ease-out 0.5s forwards;
+        }
+
+        @keyframes locationZoomIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes locationFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-bar {
+            background: linear-gradient(90deg, rgba(253, 203, 110, 0.15) 0%, rgba(225, 112, 85, 0.15) 100%);
+            border-bottom: 1px solid var(--warning);
+            padding: 0.6rem 0;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .alert-text {
+            display: inline-block;
+            font-size: 0.9rem;
+            color: var(--warning);
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: scrollText 25s linear infinite;
+        }
+
+        @keyframes scrollText {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .alert-bar.danger {
+            background: linear-gradient(90deg, rgba(225, 112, 85, 0.2) 0%, rgba(214, 48, 49, 0.2) 100%);
+            border-bottom: 1px solid var(--danger);
+        }
+
+        .alert-bar.danger .alert-text {
+            color: var(--danger);
+        }
+
+        .main-container {
+            flex: 1;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .map-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-tertiary);
+            border-radius: 0;
+            padding: 0;
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 95px);
+        }
+
+        .seoul-map {
+            width: 100%;
+            height: calc(100% - 60px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: grab;
+            position: relative;
+        }
+
+        .seoul-map:active {
+            cursor: grabbing;
+        }
+
+        .seoul-map svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .district-path {
+            fill: #243552;
+            stroke: none;
+            cursor: pointer;
+            transform-origin: center;
+            transform-box: fill-box;
+            transition: filter 0.3s ease-out;
+        }
+
+        /* Hover pulse 애니메이션 - JavaScript로 class 추가/제거 */
+        .district-path.hover-pulse-active {
+            animation: hoverPulse 0.7s ease-in-out forwards;
+        }
+
+        @keyframes hoverPulse {
+            0% {
+                filter: brightness(1) drop-shadow(0 0 0px rgba(0, 217, 255, 0));
+                transform: scale(1);
+            }
+            50% {
+                filter: brightness(1.8) drop-shadow(0 0 25px rgba(0, 217, 255, 1));
+                transform: scale(1.045);
+            }
+            100% {
+                filter: brightness(1.1) drop-shadow(0 0 6px rgba(0, 217, 255, 0.4));
+                transform: scale(1);
+            }
+        }
+
+        /* 호버 중일 때 유지되는 glow */
+        .district-path:hover {
+            filter: brightness(1.1) drop-shadow(0 0 6px rgba(0, 217, 255, 0.4));
+        }
+
+        .district-stroke {
+            fill: none;
+            stroke-width: 4;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        /* 온도 기반 색상 (지역과 동 통합) */
+        .district-stroke.level-cold, .dong-stroke.level-cold {
+            stroke: var(--color-cold);
+            filter: drop-shadow(0 0 3px rgba(52, 152, 219, 0.8));
+        }
+
+        .district-stroke.level-cool, .dong-stroke.level-cool {
+            stroke: var(--color-cool);
+            filter: drop-shadow(0 0 3px rgba(0, 217, 255, 0.6));
+        }
+
+        .district-stroke.level-good, .dong-stroke.level-good {
+            stroke: var(--color-good);
+            filter: drop-shadow(0 0 3px rgba(46, 204, 113, 0.6));
+        }
+
+        .district-stroke.level-bad, .dong-stroke.level-bad {
+            stroke: var(--color-bad);
+            filter: drop-shadow(0 0 5px rgba(243, 156, 18, 0.7));
+        }
+
+        .district-stroke.level-danger, .dong-stroke.level-danger {
+            stroke: var(--color-danger-alt);
+            filter: drop-shadow(0 0 6px rgba(231, 76, 60, 0.8));
+            animation: dangerPulse 1.5s ease-in-out infinite;
+        }
+
+        .district-stroke.level-unknown, .dong-stroke.level-unknown {
+            stroke: var(--color-neutral);
+            filter: drop-shadow(0 0 2px rgba(127, 140, 141, 0.5));
+        }
+
+        @keyframes dangerPulse {
+            0%, 100% { filter: drop-shadow(0 0 6px rgba(231, 76, 60, 0.8)); }
+            50% { filter: drop-shadow(0 0 12px rgba(231, 76, 60, 1)); }
+        }
+
+        .district-label {
+            font-weight: bold;
+            fill: #e8e8e8;
+            pointer-events: none;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            text-shadow: 1px 1px 2px #0a0f1a, -1px -1px 2px #0a0f1a, 1px -1px 2px #0a0f1a, -1px 1px 2px #0a0f1a;
+        }
+
+        .dong-path {
+            fill: #243552;
+            stroke: none;
+            cursor: pointer;
+            transform-origin: center;
+            transform-box: fill-box;
+            transition: filter 0.3s ease-out;
+        }
+
+        .dong-overlay-path {
+            transform-origin: center;
+            transform-box: fill-box;
+        }
+
+        /* 동 배경 (두근 효과 적용 대상) */
+        .dong-fill {
+            transform-origin: center;
+            transform-box: fill-box;
+        }
+
+        /* 동 Hover pulse 애니메이션 - 단발성 두근 효과만 */
+        .dong-path.hover-pulse-active,
+        .dong-fill.hover-pulse-active {
+            animation: dongHoverPulse 0.7s ease-in-out forwards;
+        }
+
+        @keyframes dongHoverPulse {
+            0% {
+                filter: brightness(1) drop-shadow(0 0 0px rgba(0, 217, 255, 0));
+                transform: scale(1);
+            }
+            50% {
+                filter: brightness(2.2) drop-shadow(0 0 35px rgba(0, 217, 255, 1));
+                transform: scale(1.06);
+            }
+            100% {
+                filter: brightness(1) drop-shadow(0 0 0px rgba(0, 217, 255, 0));
+                transform: scale(1);
+            }
+        }
+
+        .dong-path.selected,
+        .dong-overlay-path.selected {
+            filter: drop-shadow(0 0 8px rgba(0, 217, 255, 0.8));
+        }
+
+        .dong-stroke {
+            fill: none;
+            stroke-width: 2.5;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        /* 오버레이 동 경계선: 은은한 glow만 */
+        .dong-overlay-border.dong-stroke {
+            animation: none !important;
+        }
+
+        /* 동 분리선 (어두운 색) */
+        .dong-border {
+            fill: none;
+            pointer-events: none;
+            stroke-linejoin: round;
+        }
+
+        .dong-label {
+            font-weight: bold;
+            fill: #e8e8e8;
+            pointer-events: none;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            text-shadow: 1px 1px 2px #0a0f1a, -1px -1px 2px #0a0f1a, 1px -1px 2px #0a0f1a, -1px 1px 2px #0a0f1a;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-20px);
+        }
+
+        .back-button.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+
+        .back-button:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .zoom-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-secondary);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+            transition: opacity 0.5s ease-in-out;
+            border-radius: 12px;
+        }
+
+        .zoom-overlay.active {
+            opacity: 1;
+        }
+
+        .map-legend {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 0.75rem;
+            background: var(--bg-tertiary);
+            border-radius: 0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        /* 패널 공통 스타일 */
+        .panel-box {
+            position: absolute;
+            right: 20px;
+            background: var(--bg-panel);
+            border-radius: 10px;
+            z-index: 100;
+            width: 330px;
+            box-shadow: var(--shadow-panel);
+        }
+
+        .info-box {
+            top: 70px;
+            border: 1px solid var(--accent);
+            padding: 1.25rem;
+        }
+
+        /* 센서 토글 패널 - 환경정보 박스 위에 가로 배치 */
+        .sensor-toggle-panel {
+            top: 20px;
+            border: 1px solid var(--accent);
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sensor-toggle-panel .panel-title {
+            font-weight: bold;
+            color: var(--accent);
+            font-size: 0.85rem;
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+        .sensor-toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sensor-toggle-row .label {
+            font-size: 0.75rem;
+            color: #e8e8e8;
+        }
+
+        .sensor-toggle-row .toggle-switch-sm {
+            position: relative;
+            width: 36px;
+            height: 18px;
+            background: var(--bg-tertiary);
+            border-radius: 9px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        /* 토글 활성화 색상 - 센서 색상과 일치 */
+        #toggleSdot.active {
+            background: #2ecc71;
+        }
+        #toggleAsos.active {
+            background: #e74c3c;
+        }
+        #toggleAws.active {
+            background: var(--color-replay);
+        }
+
+        .sensor-toggle-row .toggle-switch-sm::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 14px;
+            height: 14px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .sensor-toggle-row .toggle-switch-sm.active::after {
+            transform: translateX(18px);
+        }
+
+        /* 관측소 마커 스타일 */
+        .station-marker-asos {
+            fill: #e74c3c;
+            stroke: #ffffff;
+            stroke-width: 1.5;
+        }
+
+        .station-marker-aws {
+            fill: var(--color-replay);
+            stroke: #ffffff;
+            stroke-width: 1.5;
+        }
+
+        .info-title {
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.15rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.4rem 0;
+            font-size: 1rem;
+        }
+
+        .info-row span:first-child {
+            color: var(--text-secondary);
+        }
+
+        .info-row span:last-child {
+            font-weight: 500;
+        }
+
+        /* Replay 박스 스타일 */
+        .replay-box {
+            top: 470px;
+            border: 1px solid var(--color-replay);
+            padding: 1.25rem;
+        }
+
+        .replay-title {
+            font-weight: bold;
+            color: #c39bd3;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .replay-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .replay-toggle label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 22px;
+            background: var(--bg-tertiary);
+            border-radius: 11px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--color-replay);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(22px);
+        }
+
+        .replay-content {
+            display: none;
+        }
+
+        .replay-content.visible {
+            display: block;
+        }
+
+        .replay-date-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .replay-date-input {
+            flex: 1;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--bg-tertiary);
+            color: var(--text-primary);
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .replay-date-input:focus {
+            outline: none;
+            border-color: var(--color-replay);
+        }
+
+        .replay-time-section {
+            margin-top: 10px;
+        }
+
+        .replay-time-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .replay-time-label span:first-child {
+            color: var(--text-secondary);
+        }
+
+        .replay-time-value {
+            color: var(--color-replay);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .replay-slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .replay-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--color-replay);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(155, 89, 182, 0.6);
+            transition: transform 0.2s ease;
+        }
+
+        .replay-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .replay-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--color-replay);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 8px rgba(155, 89, 182, 0.6);
+        }
+
+        .replay-time-marks {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .replay-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .replay-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--color-replay);
+            color: var(--color-replay);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .replay-btn:hover {
+            background: var(--color-replay);
+            color: white;
+        }
+
+        .replay-btn.active {
+            background: var(--color-replay);
+            color: white;
+        }
+
+        .replay-status {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .replay-status.active {
+            color: var(--color-replay);
+        }
+
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--accent);
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--bg-tertiary);
+            border-top: 4px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 센서 마커 - 기본 (정상 상태: 초록색) */
+        .sensor-marker {
+            fill: #2ecc71;
+            stroke: #ffffff;
+            stroke-width: 1.5;
+            cursor: pointer;
+            filter: drop-shadow(0 0 4px rgba(46, 204, 113, 0.8));
+            transition: all 0.3s ease;
+        }
+
+        .sensor-marker:hover {
+            stroke-width: 2;
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+
+        /* 센서 상태: 정상 (초록) */
+        .sensor-marker.status-normal {
+            fill: #2ecc71;
+            filter: drop-shadow(0 0 4px rgba(46, 204, 113, 0.8));
+        }
+
+        /* 센서 상태: 주의 (주황) */
+        .sensor-marker.status-warning {
+            fill: #f39c12;
+            filter: drop-shadow(0 0 5px rgba(243, 156, 18, 0.9));
+            animation: warningPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes warningPulse {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(243, 156, 18, 0.7)); }
+            50% { filter: drop-shadow(0 0 10px rgba(243, 156, 18, 1)); }
+        }
+
+        /* 센서 상태: 위험 (빨강) */
+        .sensor-marker.status-danger {
+            fill: #e74c3c;
+            filter: drop-shadow(0 0 6px rgba(231, 76, 60, 0.9));
+            animation: dangerSensorPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes dangerSensorPulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 6px rgba(231, 76, 60, 0.8));
+                r: 5;
+            }
+            50% {
+                filter: drop-shadow(0 0 15px rgba(231, 76, 60, 1));
+                r: 7;
+            }
+        }
+
+        /* 센서 모델 타입: V02Q (V 시리즈) - 흰색 테두리 */
+        .sensor-marker.model-v,
+        .sensor-overlay-marker.model-v {
+            stroke: #ffffff;
+        }
+
+        /* 센서 모델 타입: OC3 (O 시리즈) - 시안색 테두리 */
+        .sensor-marker.model-o,
+        .sensor-overlay-marker.model-o {
+            stroke: #00d9ff;
+        }
+
+        /* 발원지 역추적선 스타일 */
+        .traceback-line {
+            fill: none;
+            opacity: 0.7;
+        }
+
+        .traceback-line.status-warning {
+            stroke: #f39c12;
+        }
+
+        .traceback-line.status-danger {
+            stroke: #e74c3c;
+        }
+
+        @keyframes tracebackDash {
+            to {
+                stroke-dashoffset: -12;
+            }
+        }
+
+        /* 발원지 추정 마커 */
+        .origin-marker {
+            fill: var(--color-replay);
+            stroke: #ffffff;
+        }
+
+        .origin-marker:hover {
+            filter: drop-shadow(0 0 15px rgba(155, 89, 182, 1));
+        }
+
+        @keyframes originPulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 8px rgba(155, 89, 182, 0.6));
+            }
+            50% {
+                filter: drop-shadow(0 0 15px rgba(155, 89, 182, 1));
+            }
+        }
+
+        .origin-label-bg {
+            transition: fill 0.2s ease;
+        }
+
+        .origin-label-bg:hover {
+            fill: rgba(180, 100, 220, 0.98);
+        }
+
+        .origin-label {
+            fill: #ffffff;
+            font-weight: bold;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        .sensor-tooltip {
+            position: absolute;
+            background: rgba(22, 33, 62, 0.95);
+            border: 1px solid var(--accent);
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: #e8e8e8;
+            pointer-events: none;
+            z-index: 200;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .sensor-tooltip.visible {
+            opacity: 1;
+        }
+
+        .wind-arrow {
+            fill: none;
+            stroke: #00d9ff;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 3px rgba(0, 217, 255, 0.6));
+        }
+
+        .wind-particle {
+            fill: rgba(255, 255, 255, 0.6);
+            pointer-events: none;
+            transition: fill 0.3s ease;
+        }
+
+        /* 대기오염 감지 시 파티클 빨간색 */
+        .wind-particle.pollution-alert {
+            fill: rgba(255, 80, 80, 0.9);
+        }
+
+        /* 인라인 스타일 대체 클래스 */
+        .navbar-logo-icon { font-size: 2rem; }
+        .hidden-initial { display: none; }
+        .api-status-badge { font-size: 0.75rem; background: #c0392b; color: #ffffff; padding: 3px 8px; border-radius: 4px; margin-left: 8px; }
+        .wind-section-divider { border-top: 1px solid var(--bg-tertiary); margin-top: 12px; padding-top: 12px; }
+        .wind-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .wind-label { color: var(--accent); font-weight: bold; font-size: 1.1rem; }
+        .wind-direction-text { color: var(--accent); font-weight: bold; font-size: 1rem; }
+        .wind-arrow-container { display: flex; align-items: center; justify-content: center; margin-top: 12px; }
+        .legend-title { color: var(--text-secondary); font-size: 0.8rem; margin-right: 0.5rem; }
+        .legend-sensor-title { color: var(--text-secondary); font-size: 0.8rem; margin: 0 0.5rem 0 1rem; }
+        .legend-color-cold { background: var(--color-district-bg); border: 2px solid var(--color-cold); box-shadow: 0 0 4px rgba(52, 152, 219, 0.6); }
+        .legend-color-cool { background: var(--color-district-bg); border: 2px solid var(--color-cool); box-shadow: 0 0 4px rgba(0, 217, 255, 0.6); }
+        .legend-color-good { background: var(--color-district-bg); border: 2px solid var(--color-good); box-shadow: 0 0 4px rgba(46, 204, 113, 0.6); }
+        .legend-color-bad { background: var(--color-district-bg); border: 2px solid var(--color-bad); box-shadow: 0 0 5px rgba(243, 156, 18, 0.7); }
+        .legend-color-danger { background: var(--color-district-bg); border: 2px solid var(--color-danger-alt); box-shadow: 0 0 6px rgba(231, 76, 60, 0.8); }
+        .legend-color-nodata { background: var(--color-district-bg); border: 2px solid var(--color-neutral); box-shadow: 0 0 3px rgba(127, 140, 141, 0.5); }
+        .legend-sensor-v02q { background: var(--color-good); border: 2px solid #ffffff; border-radius: 50%; }
+        .legend-sensor-oc3 { background: var(--color-good); border: 2px solid var(--accent); border-radius: 50%; box-shadow: 0 0 4px rgba(0, 217, 255, 0.6); }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .navbar { padding: 0 1rem; }
+            .navbar-brand h1 { font-size: 1.1rem; }
+            .panel-box { width: 260px; }
+            .map-legend { gap: 0.8rem; font-size: 0.75rem; flex-wrap: wrap; }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-brand h1 { display: none; }
+            .panel-box { width: 100%; right: 0; border-radius: 0; }
+            .map-legend { flex-direction: column; align-items: center; padding: 0.3rem; font-size: 0.7rem; }
+        }
+
+        @media (min-width: 1200px) {
+            .map-container { width: 100%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .status-dot, .replay-indicator-dot, .district-path:hover, .dong-path:hover,
+            .district-stroke.level-danger, .dong-stroke.level-danger,
+            .sensor-marker.status-warning, .sensor-marker.status-danger,
+            .location-announce *, .alert-text, .loading-spinner {
+                animation: none !important;
+            }
+        }

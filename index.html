@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-DoT 서울 스마트시티 대시보드</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🌆</text></svg>">
+    <link rel="stylesheet" href="css/style.css?v=19">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <span class="navbar-logo-icon">🌆</span>
+            <h1>S-DoT 서울 스마트시티 대시보드</h1>
+        </div>
+        <div class="navbar-status">
+            <div class="status-indicator" id="liveStatusIndicator">
+                <div class="status-dot"></div>
+                <span>실시간 연결됨</span>
+            </div>
+            <div class="replay-time-indicator hidden-initial" id="replayTimeIndicator">
+                <div class="replay-indicator-dot"></div>
+                <span>⏪ REPLAY</span>
+                <span id="replayTimeDisplay">--:--:--</span>
+            </div>
+            <div class="http-status ok" id="httpStatus">
+                <div class="http-status-dot"></div>
+                <span id="httpStatusText">HTTP 200 OK</span>
+                <span id="httpLatency">(--ms)</span>
+            </div>
+            <div class="data-refresh-time" id="dataRefreshTime">
+                <span>데이터 갱신:</span>
+                <span id="lastDataTime">--:--:--</span>
+            </div>
+            <div id="currentTime">2026-01-30 15:30:00</div>
+        </div>
+    </nav>
+
+    <!-- 지역 진입 연출 오버레이 -->
+    <div class="location-announce" id="locationAnnounce">
+        <div class="district-name" id="announceDistrict"></div>
+        <div class="dong-name" id="announceDong"></div>
+        <div class="subtitle" id="announceSubtitle"></div>
+    </div>
+
+    <div class="alert-bar" id="alertBar">
+        <span class="alert-text" id="alertText">현재 강남구, 송파구 PM2.5 농도가 '나쁨' 수준입니다. 외출 시 마스크 착용을 권장합니다.</span>
+    </div>
+
+    <main class="main-container">
+        <div class="map-container">
+            <!-- 센서 토글 패널 -->
+            <div class="panel-box sensor-toggle-panel" id="sensorTogglePanel">
+                <div class="panel-title">센서 표시</div>
+                <div class="sensor-toggle-row">
+                    <span class="label">ASOS</span>
+                    <div class="toggle-switch-sm" id="toggleAsos"></div>
+                </div>
+                <div class="sensor-toggle-row">
+                    <span class="label">AWS</span>
+                    <div class="toggle-switch-sm" id="toggleAws"></div>
+                </div>
+                <div class="sensor-toggle-row">
+                    <span class="label">S-DoT</span>
+                    <div class="toggle-switch-sm" id="toggleSdot"></div>
+                </div>
+            </div>
+
+            <div class="panel-box info-box" id="infoBox">
+                <div class="info-title">실시간 환경정보 <span id="apiStatusBadge" class="api-status-badge">OFFLINE</span></div>
+                <div class="info-row"><span>지역</span><span id="infoName">-</span></div>
+                <div class="info-row"><span>온도</span><span id="infoTemp">- °C</span></div>
+                <div class="info-row"><span>습도</span><span id="infoHumidity">- %</span></div>
+                <div class="info-row"><span>소음</span><span id="infoNoise">- dB</span></div>
+                <div class="wind-section-divider">
+                    <div class="wind-header-row">
+                        <span class="wind-label">바람</span>
+                        <span id="infoWindDir" class="wind-direction-text">-</span>
+                    </div>
+                    <div class="info-row"><span>풍속</span><span id="infoWindSpeed">- m/s</span></div>
+                    <div id="windArrowContainer" class="wind-arrow-container">
+                        <svg width="70" height="70" viewBox="-35 -35 70 70" aria-label="바람 방향 나침반" role="img">
+                            <circle r="30" fill="none" stroke="#0f3460" stroke-width="1.5"/>
+                            <text x="0" y="-22" text-anchor="middle" fill="#a0a0a0" font-size="10">북</text>
+                            <text x="22" y="4" text-anchor="middle" fill="#a0a0a0" font-size="10">동</text>
+                            <text x="0" y="28" text-anchor="middle" fill="#a0a0a0" font-size="10">남</text>
+                            <text x="-22" y="4" text-anchor="middle" fill="#a0a0a0" font-size="10">서</text>
+                            <path id="infoWindArrow" d="M0,-20 L5,0 L2.5,0 L2.5,14 L-2.5,14 L-2.5,0 L-5,0 Z" fill="#00d9ff" transform="rotate(45)"/>
+                            <circle r="3" fill="#00d9ff"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Replay 박스 -->
+            <div class="panel-box replay-box" id="replayBox">
+                <div class="replay-title">
+                    <span>⏪ Replay</span>
+                    <div class="replay-toggle">
+                        <div class="toggle-switch" id="replayToggle"></div>
+                    </div>
+                </div>
+                <div class="replay-content" id="replayContent">
+                    <div class="replay-date-row">
+                        <input type="date" class="replay-date-input" id="replayDate">
+                    </div>
+                    <div class="replay-time-section">
+                        <div class="replay-time-label">
+                            <span>시간</span>
+                            <span class="replay-time-value" id="replayTimeValue">12:00</span>
+                        </div>
+                        <input type="range" class="replay-slider" id="replaySlider" min="0" max="23" value="12">
+                        <div class="replay-time-marks">
+                            <span>00시</span>
+                            <span>06시</span>
+                            <span>12시</span>
+                            <span>18시</span>
+                            <span>23시</span>
+                        </div>
+                    </div>
+                    <div class="replay-controls">
+                        <button class="replay-btn" id="replayPrevBtn" title="1시간 전">
+                            ◀◀
+                        </button>
+                        <button class="replay-btn" id="replayPlayBtn" title="자동 재생">
+                            ▶
+                        </button>
+                        <button class="replay-btn" id="replayNextBtn" title="1시간 후">
+                            ▶▶
+                        </button>
+                    </div>
+                    <div class="replay-status" id="replayStatus">날짜를 선택하세요</div>
+                </div>
+            </div>
+
+            <button class="back-button" id="backButton">
+                <span>←</span> 서울시 전체보기
+            </button>
+            <div class="zoom-overlay" id="zoomOverlay"></div>
+            <div class="seoul-map" id="seoulMap">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <span>지도 로딩 중...</span>
+                </div>
+            </div>
+            <div class="map-legend">
+                <span class="legend-title">실시간 온도 (°C)</span>
+                <div class="legend-item">
+                    <div class="legend-color legend-color-cold"></div>
+                    <span>영하 (&lt;0)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-color-cool"></div>
+                    <span>서늘 (0-10)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-color-good"></div>
+                    <span>쾌적 (10-25)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-color-bad"></div>
+                    <span>더움 (25-35)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-color-danger"></div>
+                    <span>폭염 (35+)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-color-nodata"></div>
+                    <span>데이터없음</span>
+                </div>
+                <span class="legend-sensor-title">센서 타입</span>
+                <div class="legend-item">
+                    <div class="legend-color legend-sensor-v02q"></div>
+                    <span>V02Q</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-sensor-oc3"></div>
+                    <span>OC3</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="js/config.js?v=3" defer></script>
+    <script src="js/utils.js?v=3" defer></script>
+    <script src="js/anomaly.js?v=3" defer></script>
+    <script src="js/api.js?v=3" defer></script>
+    <script src="js/wind.js?v=3" defer></script>
+    <script src="js/sensor-markers.js?v=3" defer></script>
+    <script src="js/ui.js?v=4" defer></script>
+    <script src="js/map.js?v=5" defer></script>
+    <script src="js/dong-overlay.js?v=14" defer></script>
+    <script src="js/view.js?v=3" defer></script>
+    <script src="js/location.js?v=3" defer></script>
+    <script src="js/sensor-layer.js?v=3" defer></script>
+    <script src="js/replay.js?v=3" defer></script>
+    <script src="js/http-status.js?v=3" defer></script>
+    <script src="js/init.js?v=3" defer></script>
+</body>
+</html>
